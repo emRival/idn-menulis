@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', $tag->name . ' - IDN Menulis')
-
+@section('meta_title', '#' . $tag->name . ' - IDN Menulis')
+@section('meta_description', 'Kumpulan artikel dengan tag #' . $tag->name . ' di IDN Menulis.')
 @section('content')
     <!-- Hero Header -->
     <section class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-16">

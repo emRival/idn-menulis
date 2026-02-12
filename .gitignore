@@ -13,7 +13,7 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
+# /public/build is tracked — required for production @vite
 /public/hot
 /public/storage
 /storage/*.key

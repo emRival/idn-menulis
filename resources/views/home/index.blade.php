@@ -512,10 +512,11 @@
 @section('scripts')
     <script>
         // Featured Articles Swiper
+        const featuredSlides = document.querySelectorAll('.featuredSwiper .swiper-slide').length;
         new Swiper('.featuredSwiper', {
             slidesPerView: 1,
             spaceBetween: 24,
-            loop: true,
+            loop: featuredSlides >= 4,
             autoplay: {
                 delay: 5000,
                 disableOnInteraction: false,

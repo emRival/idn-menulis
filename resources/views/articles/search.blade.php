@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('title', ($query ? "Hasil Pencarian: {$query}" : 'Cari Artikel') . ' - IDN Menulis')
-
+@section('meta_title', ($query ? "Hasil Pencarian: {$query}" : 'Cari Artikel') . ' - IDN Menulis')
+@section('meta_description', $query ? "Hasil pencarian untuk \"{$query}\" di IDN Menulis." : 'Cari artikel di IDN Menulis.')
 @section('content')
     <!-- Hero Header -->
     <section class="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-16">

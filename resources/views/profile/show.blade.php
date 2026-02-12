@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', $user->full_name . ' - Profil IDN Menulis')
-
+@section('meta_title', $user->full_name . ' - Profil IDN Menulis')
+@section('meta_description', 'Profil penulis ' . $user->full_name . ' di IDN Menulis.')
+@section('og_type', 'profile')
 @section('styles')
 <style>
     .cover-section {
