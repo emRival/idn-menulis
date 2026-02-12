@@ -36,8 +36,9 @@
     <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.jpg'))">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
     <!-- Preconnect untuk performa -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -251,9 +252,9 @@
             $registrationEnabled = \App\Models\Setting::where('key', 'registration_enabled')->value('value') !== '0';
         @endphp
         <div x-data="{
-                        get isOpen() { return Alpine.store('loginModal') },
-                        set isOpen(value) { Alpine.store('loginModal', value) }
-                    }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false" x-cloak
+                            get isOpen() { return Alpine.store('loginModal') },
+                            set isOpen(value) { Alpine.store('loginModal', value) }
+                        }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false" x-cloak
             class="fixed inset-0 z-[9999] overflow-hidden" style="display: none;">
 
             <!-- Backdrop -->
