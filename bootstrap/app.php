@@ -63,6 +63,9 @@ return Application::configure(basePath: dirname(__DIR__))
             SQLInjectionProtection::class,
             CommandInjectionProtection::class,
         ]);
+
+        // Trust all proxies (Required for Nginx Proxy Manager / Cloudflare)
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Handle exceptions for JSON/AJAX requests
