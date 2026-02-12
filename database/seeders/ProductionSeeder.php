@@ -21,11 +21,10 @@ class ProductionSeeder extends Seeder
                 'username' => 'admin',
                 'email' => 'admin@idnbogor.id',
                 'full_name' => 'Super Administrator',
-                'password' => Hash::make('password_aman_disini'), // Ganti nanti!
+                'password' => Hash::make('IDNpamijahandarderdor'), // Ganti nanti!
                 'role' => 'admin',
                 'is_active' => true,
                 'email_verified_at' => now(),
-                'security_key' => null, // Optional
             ]);
             $this->command->info('Admin user created: admin@idnbogor.id / password_aman_disini');
         }
