@@ -46,7 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Global middleware for all web requests
         $middleware->appendToGroup('web', [
             TrustedHosts::class,            // Validate trusted hosts
-            ForceHttps::class,              // Force HTTPS in production
+                // ForceHttps::class,              // Force HTTPS in production (Temporarily disabled to fix redirect loop)
             RedirectMiddleware::class,      // Handle URL redirects first
             SEOMiddleware::class,           // SEO optimizations
             SecurityHeaders::class,
