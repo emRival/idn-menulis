@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'IDN Menulis - Platform Literasi Digital Indonesia')
-
+@section('meta_title', 'IDN Menulis - Platform Literasi Digital Indonesia')
+@section('meta_description', 'Platform menulis dan berbagi karya tulis terbaik di Indonesia. Tulis, baca, dan bagikan karya tulismu bersama IDN Menulis.')
+@section('meta_keywords', 'menulis, blog, artikel, cerita, indonesia, penulis, literasi digital, karya tulis')
+@section('og_image', asset('images/og-default.jpg'))
 @section('content')
 
     <!-- Hero Section -->
