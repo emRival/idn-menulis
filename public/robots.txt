@@ -1,0 +1,117 @@
+# ==============================================================================
+# Robots.txt for IDN Menulis - Optimized for SEO
+# ==============================================================================
+
+User-agent: *
+Allow: /
+
+# Disallow admin and sensitive areas
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /password/
+Disallow: /api/
+Disallow: /sanctum/
+Disallow: /profil/sunting
+Disallow: /profil/ubah-password
+Disallow: /profil/keamanan
+
+# Disallow temporary and system files (but allow sitemaps and feeds)
+Disallow: /*.sql$
+Disallow: /*.log$
+Disallow: /*.env$
+
+# Allow important resources
+Allow: /sitemap.xml
+Allow: /sitemap-*.xml
+Allow: /feed
+Allow: /feed.xml
+Allow: /feed.json
+Allow: /rss
+Allow: /manifest.json
+
+# Crawl delay (optional - helps prevent server overload)
+Crawl-delay: 1
+
+# ==============================================================================
+# Googlebot specific rules
+# ==============================================================================
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+# ==============================================================================
+# Bingbot specific rules
+# ==============================================================================
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# ==============================================================================
+# Other good bots
+# ==============================================================================
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: facebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Pinterest
+Allow: /
+
+# ==============================================================================
+# Block aggressive and unwanted bots
+# ==============================================================================
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# ==============================================================================
+# Sitemap locations
+# ==============================================================================
+Sitemap: https://idnmenulis.com/sitemap.xml
+Sitemap: https://idnmenulis.com/sitemap-articles.xml
+Sitemap: https://idnmenulis.com/sitemap-categories.xml
+Sitemap: https://idnmenulis.com/sitemap-news.xml
+Sitemap: https://idnmenulis.com/sitemap-images.xml

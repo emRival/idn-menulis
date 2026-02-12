@@ -1,0 +1,136 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Force HTTPS (production)
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1 [NC]
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ==============================================================================
+# PHP UPLOAD SETTINGS (for auto-compression support)
+# ==============================================================================
+
+<IfModule mod_php.c>
+    php_value upload_max_filesize 12M
+    php_value post_max_size 15M
+    php_value memory_limit 256M
+    php_value max_execution_time 120
+    php_value max_input_time 120
+</IfModule>
+
+# ==============================================================================
+# SECURITY HEADERS
+# ==============================================================================
+
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Remove server signature
+    Header always unset X-Powered-By
+    Header always unset Server
+
+    # HSTS (uncomment in production with HTTPS)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Permissions Policy
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ==============================================================================
+# BLOCK SENSITIVE FILES
+# ==============================================================================
+
+# Block access to hidden files and directories
+<IfModule mod_rewrite.c>
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
+</IfModule>
+
+# Block access to backup and source files
+<FilesMatch "(\.(bak|backup|config|dist|fla|inc|ini|log|psd|sh|sql|swp|env|yml|yaml)|~)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block access to .env file
+<Files ".env">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# Block access to composer files
+<FilesMatch "^composer\.(json|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</FilesMatch>
+
+# ==============================================================================
+# PREVENT DIRECTORY LISTING
+# ==============================================================================
+
+Options -Indexes
+
+# ==============================================================================
+# FILE UPLOAD RESTRICTIONS
+# ==============================================================================
+
+# Disable PHP in uploads directory
+<IfModule mod_php.c>
+    <Directory "storage/app/public">
+        php_flag engine off
+    </Directory>
+</IfModule>
+
+# Block execution of PHP files in storage
+<FilesMatch "\.ph(p[2-7]?|t|tml|ps|ar)$">
+    <IfModule mod_authz_core.c>
+        SetHandler none
+        Require all denied
+    </IfModule>
+</FilesMatch>

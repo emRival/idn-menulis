@@ -1,0 +1,101 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Security Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for advanced security features
+    |
+    */
+
+    // Admin email for security notifications
+    'admin_email' => env('SECURITY_ADMIN_EMAIL', 'admin@idnmenulis.com'),
+
+    // Rate limiting settings
+    'rate_limits' => [
+        'login' => [
+            'max_attempts' => 5,
+            'decay_minutes' => 1,
+            'block_minutes' => 60,
+        ],
+        'api' => [
+            'max_attempts' => 60,
+            'decay_minutes' => 1,
+        ],
+        'register' => [
+            'max_attempts' => 3,
+            'decay_minutes' => 60,
+        ],
+        'password_reset' => [
+            'max_attempts' => 3,
+            'decay_minutes' => 60,
+        ],
+    ],
+
+    // Session security
+    'session' => [
+        'timeout_minutes' => 120,
+        'regenerate_on_login' => true,
+        'invalidate_on_password_change' => true,
+    ],
+
+    // File upload security
+    'upload' => [
+        'max_size_kb' => 5120, // 5MB
+        'allowed_mimes' => [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ],
+        'allowed_extensions' => [
+            'jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx'
+        ],
+        'blocked_extensions' => [
+            'php', 'php3', 'php4', 'php5', 'phtml', 'exe', 'sh', 'bat',
+            'cmd', 'com', 'cgi', 'pl', 'py', 'asp', 'aspx', 'jsp', 'jar',
+            'htaccess', 'htpasswd', 'ini', 'log', 'sql', 'bak', 'swp'
+        ],
+    ],
+
+    // IP whitelist for admin (optional)
+    'admin_ip_whitelist' => array_filter(explode(',', env('ADMIN_IP_WHITELIST', ''))),
+
+    // Enable/disable specific security features
+    'features' => [
+        'two_factor_auth' => env('SECURITY_2FA_ENABLED', true),
+        'email_verification' => env('SECURITY_EMAIL_VERIFICATION', true),
+        'ip_blocking' => env('SECURITY_IP_BLOCKING', true),
+        'activity_logging' => env('SECURITY_ACTIVITY_LOGGING', true),
+        'suspicious_detection' => env('SECURITY_SUSPICIOUS_DETECTION', true),
+    ],
+
+    // Encryption settings for sensitive data
+    'encryption' => [
+        'encrypt_fields' => ['phone', 'address', 'id_number'],
+    ],
+
+    // Password requirements
+    'password' => [
+        'min_length' => 8,
+        'require_uppercase' => true,
+        'require_lowercase' => true,
+        'require_number' => true,
+        'require_special' => true,
+    ],
+
+    // Two-factor authentication
+    'two_factor' => [
+        'issuer' => env('APP_NAME', 'IDN Menulis'),
+        'digits' => 6,
+        'window' => 1,
+        'recovery_codes' => 8,
+    ],
+
+];
