@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
 @section('title', $article->title . ' - IDN Menulis')
-@section('description', Str::limit($article->excerpt ?? strip_tags($article->content), 160))
+@section('meta_title', $article->title)
+@section('meta_description', Str::limit($article->excerpt ?? strip_tags($article->content), 160))
+@section('og_image', $article->featured_image ? asset('storage/' . $article->featured_image) : asset('images/og-default.jpg'))
+@section('og_type', 'article')
 
 @section('styles')
     <style>
@@ -414,7 +417,7 @@
                                     <h3 class="text-xl font-bold text-gray-900">{{ $article->user->full_name }}</h3>
                                     <span
                                         class="px-2 py-0.5 text-xs font-medium rounded-full
-                                            {{ $article->user->role === 'admin' ? 'bg-red-100 text-red-700' : ($article->user->role === 'guru' ? 'bg-blue-100 text-blue-700' : 'bg-primary-100 text-primary-700') }}">
+                                                {{ $article->user->role === 'admin' ? 'bg-red-100 text-red-700' : ($article->user->role === 'guru' ? 'bg-blue-100 text-blue-700' : 'bg-primary-100 text-primary-700') }}">
                                         {{ ucfirst($article->user->role) }}
                                     </span>
                                 </div>
