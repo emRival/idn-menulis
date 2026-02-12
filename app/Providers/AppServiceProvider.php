@@ -21,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS in production (fixes ERR_TOO_MANY_REDIRECTS behind proxies)
+        if ($this->app->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Share navbar categories (cached for 10 minutes)
         View::composer('components.navbar', function ($view) {
             $navCategories = Cache::remember('nav_categories', 600, function () {
