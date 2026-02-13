@@ -857,16 +857,70 @@ function profileManager() {
     return {
         activeTab: 'articles',
         articleFilter: 'all',
+        uploading: false,
+
+        // Client-side image compression using Canvas
+        compressImage(file, maxWidth, maxHeight, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let { width, height } = img;
+
+                        // Scale down if larger than max dimensions
+                        if (width > maxWidth || height > maxHeight) {
+                            const ratio = Math.min(maxWidth / width, maxHeight / height);
+                            width = Math.round(width * ratio);
+                            height = Math.round(height * ratio);
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), {
+                                    type: 'image/jpeg',
+                                    lastModified: Date.now(),
+                                }));
+                            } else {
+                                reject(new Error('Gagal mengkompresi gambar'));
+                            }
+                        }, 'image/jpeg', quality);
+                    };
+                    img.onerror = () => reject(new Error('Gagal memuat gambar'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error('Gagal membaca file'));
+                reader.readAsDataURL(file);
+            });
+        },
 
         async uploadCover(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const formData = new FormData();
-            formData.append('cover_image', file);
-            formData.append('_token', '{{ csrf_token() }}');
+            // Validate file size (max 10MB input)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar. Maksimal 10MB.');
+                return;
+            }
+
+            this.uploading = true;
 
             try {
+                // Compress: max 1920px wide, JPEG 80% quality
+                const compressed = await this.compressImage(file, 1920, 1080, 0.8);
+                console.log(`Cover compressed: ${(file.size/1024).toFixed(0)}KB → ${(compressed.size/1024).toFixed(0)}KB`);
+
+                const formData = new FormData();
+                formData.append('cover_image', compressed);
+                formData.append('_token', '{{ csrf_token() }}');
+
                 const response = await fetch('{{ route("profile.cover.update") }}', {
                     method: 'POST',
                     body: formData,
@@ -876,11 +930,13 @@ function profileManager() {
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('Gagal mengupload cover');
+                    alert('Gagal mengupload cover: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error uploading cover:', error);
-                alert('Terjadi kesalahan');
+                alert('Terjadi kesalahan: ' + error.message);
+            } finally {
+                this.uploading = false;
             }
         },
 
@@ -888,11 +944,23 @@ function profileManager() {
             const file = event.target.files[0];
             if (!file) return;
 
-            const formData = new FormData();
-            formData.append('avatar', file);
-            formData.append('_token', '{{ csrf_token() }}');
+            // Validate file size (max 5MB input)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar. Maksimal 5MB.');
+                return;
+            }
+
+            this.uploading = true;
 
             try {
+                // Compress: max 512px, JPEG 80% quality
+                const compressed = await this.compressImage(file, 512, 512, 0.8);
+                console.log(`Avatar compressed: ${(file.size/1024).toFixed(0)}KB → ${(compressed.size/1024).toFixed(0)}KB`);
+
+                const formData = new FormData();
+                formData.append('avatar', compressed);
+                formData.append('_token', '{{ csrf_token() }}');
+
                 const response = await fetch('{{ route("profile.avatar.update") }}', {
                     method: 'POST',
                     body: formData,
@@ -902,11 +970,13 @@ function profileManager() {
                 if (data.success) {
                     document.getElementById('avatar-preview').src = data.avatar_url;
                 } else {
-                    alert('Gagal mengupload avatar');
+                    alert('Gagal mengupload avatar: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error uploading avatar:', error);
-                alert('Terjadi kesalahan');
+                alert('Terjadi kesalahan: ' + error.message);
+            } finally {
+                this.uploading = false;
             }
         }
     }
