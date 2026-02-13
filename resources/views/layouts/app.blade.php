@@ -403,6 +403,12 @@
 
     @yield('scripts')
     @stack('scripts')
+    
+    @guest
+        @if(config('services.turnstile.key'))
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        @endif
+    @endguest
 </body>
 
 </html>

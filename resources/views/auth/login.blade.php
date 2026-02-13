@@ -325,7 +325,5 @@ function loginForm() {
 @endsection
 
 @push('scripts')
-    @if(config('services.turnstile.key'))
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    @endif
+    <!-- Turnstile script is now loaded globally in app.blade.php -->
 @endpush
