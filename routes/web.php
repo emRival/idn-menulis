@@ -317,6 +317,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/users/{user}/nonaktifkan', [UserController::class, 'deactivate'])->name('users.deactivate');
     Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::post('/users/{user}/ubah-role', [UserController::class, 'changeRole'])->name('users.change-role');
+    Route::post('/users/{user}/notifikasi', [UserController::class, 'sendNotification'])->name('users.notify');
     Route::post('/users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
     Route::get('/users-export', [UserController::class, 'export'])->name('users.export');
     Route::get('/users/{user}/data', [UserController::class, 'getData'])->name('users.data');

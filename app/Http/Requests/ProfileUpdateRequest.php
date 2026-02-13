@@ -22,6 +22,8 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'username' => ['required', 'string', 'max:255', 'alpha_dash', \Illuminate\Validation\Rule::unique('users')->ignore($this->user()->id)],
+            'email' => ['required', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($this->user()->id)],
             'full_name' => 'required|string|min:3|max:100',
             'bio' => 'nullable|string|max:500',
             'avatar' => 'nullable|image|max:10240|mimes:jpeg,png,jpg,webp', // 10MB, will be auto-compressed

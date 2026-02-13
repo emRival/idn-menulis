@@ -128,13 +128,18 @@ class UserController extends Controller
      */
     public function show(User $user): View
     {
-        $user->load(['articles' => function ($q) {
-            $q->latest()->limit(10);
-        }, 'comments' => function ($q) {
-            $q->with('article')->latest()->limit(10);
-        }, 'approvals', 'activityLogs' => function ($q) {
-            $q->latest()->limit(20);
-        }]);
+        $user->load([
+            'articles' => function ($q) {
+                $q->latest()->limit(10);
+            },
+            'comments' => function ($q) {
+                $q->with('article')->latest()->limit(10);
+            },
+            'approvals',
+            'activityLogs' => function ($q) {
+                $q->latest()->limit(20);
+            }
+        ]);
 
         // Get article stats
         $articleStats = [
@@ -401,13 +406,17 @@ class UserController extends Controller
      */
     public function getData(User $user): JsonResponse
     {
-        $user->load(['articles' => function ($q) {
-            $q->latest()->limit(5);
-        }, 'comments' => function ($q) {
-            $q->with('article')->latest()->limit(5);
-        }, 'activityLogs' => function ($q) {
-            $q->latest()->limit(10);
-        }]);
+        $user->load([
+            'articles' => function ($q) {
+                $q->latest()->limit(5);
+            },
+            'comments' => function ($q) {
+                $q->with('article')->latest()->limit(5);
+            },
+            'activityLogs' => function ($q) {
+                $q->latest()->limit(10);
+            }
+        ]);
 
         return response()->json([
             'user' => $user,
@@ -421,5 +430,34 @@ class UserController extends Controller
             'recent_comments' => $user->comments,
             'activity_logs' => $user->activityLogs,
         ]);
+    }
+    /**
+     * Send notification to user.
+     */
+    public function sendNotification(Request $request, User $user): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        \App\Models\Notification::create([
+            'user_id' => $user->id,
+            'type' => 'admin_notification',
+            'title' => $validated['title'],
+            'message' => $validated['message'],
+            'is_read' => false,
+        ]);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'send_notification',
+            'description' => "Mengirim notifikasi ke {$user->full_name}: {$validated['title']}",
+            'subject_type' => User::class,
+            'subject_id' => $user->id,
+            'ip_address' => $request->ip(),
+        ]);
+
+        return back()->with('success', 'Notifikasi berhasil dikirim.');
     }
 }

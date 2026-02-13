@@ -101,6 +101,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    /**
      * Get user by hashid.
      */
     public static function findByHashId(string $hashId): ?self

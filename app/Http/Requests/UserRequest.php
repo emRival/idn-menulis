@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->user?->id ?? 'NULL';
+        $userId = $this->route('user')?->id ?? 'NULL';
 
         return [
             'username' => 'required|alpha_dash|min:4|max:50|unique:users,username,' . $userId,

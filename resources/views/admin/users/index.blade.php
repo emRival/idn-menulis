@@ -4,9 +4,9 @@
 
 @section('content')
     <div x-data="userManagement()"
-        @open-reset-password-modal.window="showResetPasswordModal($event.detail.userId, $event.detail.userName)"
-        @open-change-role-modal.window="showChangeRoleModal($event.detail.userId, $event.detail.userName, $event.detail.currentRole)"
-        @open-delete-modal.window="showDeleteModal($event.detail.userId, $event.detail.userName)"
+        @open-reset-password-modal.window="showResetPasswordModal($event.detail.userId, $event.detail.userName, $event.detail.userUsername)"
+        @open-change-role-modal.window="showChangeRoleModal($event.detail.userId, $event.detail.userName, $event.detail.currentRole, $event.detail.userUsername)"
+        @open-delete-modal.window="showDeleteModal($event.detail.userId, $event.detail.userName, $event.detail.userUsername)"
         class="min-h-screen bg-gray-50">
         <!-- Sticky Header -->
         <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
@@ -334,10 +334,10 @@
                                     </td>
                                     <td class="px-4 py-4">
                                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium
-                                            @if($user->role === 'admin') bg-red-100 text-red-700
-                                            @elseif($user->role === 'guru') bg-blue-100 text-blue-700
-                                            @else bg-emerald-100 text-emerald-700
-                                            @endif">
+                                                            @if($user->role === 'admin') bg-red-100 text-red-700
+                                                            @elseif($user->role === 'guru') bg-blue-100 text-blue-700
+                                                            @else bg-emerald-100 text-emerald-700
+                                                            @endif">
                                             @if($user->role === 'admin')
                                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
@@ -430,7 +430,7 @@
                                                     class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
                                                     <!-- Reset Password -->
                                                     <button type="button"
-                                                        @click="open = false; $dispatch('open-reset-password-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}' })"
+                                                        @click="open = false; $dispatch('open-reset-password-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}', userUsername: '{{ $user->username }}' })"
                                                         class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
@@ -443,7 +443,7 @@
 
                                                     <!-- Change Role -->
                                                     <button type="button"
-                                                        @click="open = false; $dispatch('open-change-role-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}', currentRole: '{{ $user->role }}' })"
+                                                        @click="open = false; $dispatch('open-change-role-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}', currentRole: '{{ $user->role }}', userUsername: '{{ $user->username }}' })"
                                                         class="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                                         <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
@@ -489,7 +489,7 @@
                                                     <hr class="my-1 border-gray-100">
 
                                                     <button type="button"
-                                                        @click="open = false; $dispatch('open-delete-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}' })"
+                                                        @click="open = false; $dispatch('open-delete-modal', { userId: {{ $user->id }}, userName: '{{ addslashes($user->full_name) }}', userUsername: '{{ $user->username }}' })"
                                                         class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
@@ -552,7 +552,7 @@
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form :action="'/admin/users/' + selectedUserId + '/reset-password'" method="POST">
+                    <form :action="'/admin/users/' + selectedUserUsername + '/reset-password'" method="POST">
                         @csrf
                         <div class="bg-white px-6 pt-6 pb-4">
                             <div class="flex items-center gap-4">
@@ -609,7 +609,7 @@
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form :action="'/admin/users/' + selectedUserId + '/ubah-role'" method="POST">
+                    <form :action="'/admin/users/' + selectedUserUsername + '/ubah-role'" method="POST">
                         @csrf
                         <div class="bg-white px-6 pt-6 pb-4">
                             <div class="flex items-center gap-4">
@@ -738,7 +738,7 @@
                     <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
                         <button type="button" @click="deleteModal = false"
                             class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                        <form :action="'/admin/users/' + selectedUserId" method="POST" class="inline">
+                        <form :action="'/admin/users/' + selectedUserUsername" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
@@ -769,6 +769,7 @@
                 deleteModal: false,
                 selectedUserId: null,
                 selectedUserName: '',
+                selectedUserUsername: '',
                 selectedRole: 'siswa',
                 bulkActionType: '',
 
@@ -786,7 +787,7 @@
                             @foreach($users as $user)
                                 {{ $user->id }},
                             @endforeach
-                    ];
+                            ];
                     } else {
                         this.selectedUsers = [];
                     }
@@ -796,22 +797,25 @@
                     this.selectedUsers = [];
                 },
 
-                showResetPasswordModal(userId, userName) {
+                showResetPasswordModal(userId, userName, userUsername) {
                     this.selectedUserId = userId;
                     this.selectedUserName = userName;
+                    this.selectedUserUsername = userUsername;
                     this.resetPasswordModal = true;
                 },
 
-                showChangeRoleModal(userId, userName, currentRole) {
+                showChangeRoleModal(userId, userName, currentRole, userUsername) {
                     this.selectedUserId = userId;
                     this.selectedUserName = userName;
+                    this.selectedUserUsername = userUsername;
                     this.selectedRole = currentRole;
                     this.changeRoleModal = true;
                 },
 
-                showDeleteModal(userId, userName) {
+                showDeleteModal(userId, userName, userUsername) {
                     this.selectedUserId = userId;
                     this.selectedUserName = userName;
+                    this.selectedUserUsername = userUsername;
                     this.deleteModal = true;
                 },
 
