@@ -57,7 +57,12 @@ Route::middleware(['guest'])->group(function () {
             ];
         }
 
-        $credentials = $request->validate($rules);
+        $credentials = $request->validate($rules, [
+            'cf-turnstile-response.required' => 'Silakan selesaikan Captcha keamanan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'password.required' => 'Password wajib diisi.',
+        ]);
 
         // Rate limiting check with progressive delay
         $throttleKey = 'login_attempt_' . $request->ip();

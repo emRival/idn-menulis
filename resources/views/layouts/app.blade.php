@@ -214,10 +214,10 @@
             $registrationEnabled = \App\Models\Setting::where('key', 'registration_enabled')->value('value') !== '0';
         @endphp
         <div x-data="{
-                                get isOpen() { return Alpine.store('loginModal') },
-                                set isOpen(value) { Alpine.store('loginModal', value) }
-                            }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false" x-cloak
-            class="fixed inset-0 z-[9999] overflow-hidden" style="display: none;">
+                                    get isOpen() { return Alpine.store('loginModal') },
+                                    set isOpen(value) { Alpine.store('loginModal', value) }
+                                }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false"
+            x-cloak class="fixed inset-0 z-[9999] overflow-hidden" style="display: none;">
 
             <!-- Backdrop -->
             <div x-show="$store.loginModal" x-transition:enter="transition duration-300 ease-out"
@@ -393,6 +393,7 @@
     </script>
 
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>
