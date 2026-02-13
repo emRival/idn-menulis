@@ -58,6 +58,20 @@ class HomeController extends Controller
     }
 
     /**
+     * Display all categories.
+     */
+    public function categories(): View
+    {
+        // Get all categories with published article count
+        $categories = Category::where('is_active', true)
+            ->withCount(['articles' => fn($q) => $q->where('status', 'published')])
+            ->orderBy('order_position')
+            ->get();
+
+        return view('categories.index', compact('categories'));
+    }
+
+    /**
      * Display articles by category.
      */
     public function category(Category $category): View

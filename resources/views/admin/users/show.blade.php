@@ -219,7 +219,7 @@
                             <div class="mt-6 pt-6 border-t border-gray-100">
                                 <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Quick Actions</p>
                                 <div class="space-y-2">
-                                    <button @click="showChangeRoleModal = true"
+                                    <button type="button" @click="showChangeRoleModal = true"
                                         class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                                         <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -228,7 +228,7 @@
                                         </svg>
                                         Ubah Role
                                     </button>
-                                    <button @click="showNotificationModal = true"
+                                    <button type="button" @click="showNotificationModal = true"
                                         class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -237,7 +237,7 @@
                                         </svg>
                                         Kirim Notifikasi
                                     </button>
-                                    <button @click="showDeleteModal = true"
+                                    <button type="button" @click="showDeleteModal = true"
                                         class="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm text-red-600 bg-red-50 rounded-xl hover:bg-red-100 transition-colors">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -829,14 +829,14 @@
         </div>
 
         <!-- Reset Password Modal -->
-        <div x-show="showResetPasswordModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto"
+        <div x-show="showResetPasswordModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto"
             aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0" @click="showResetPasswordModal = false"
-                    class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity"></div>
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
                 <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -883,14 +883,14 @@
         </div>
 
         <!-- Change Role Modal -->
-        <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0" @click="showChangeRoleModal = false"
-                    class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity"></div>
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
                 <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -982,14 +982,14 @@
         </div>
 
         <!-- Suspend Modal -->
-        <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0" @click="showSuspendModal = false"
-                    class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity"></div>
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
                 <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -1033,14 +1033,14 @@
         </div>
 
         <!-- Delete Modal -->
-        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0" @click="showDeleteModal = false"
-                    class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity"></div>
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
                 <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -1084,14 +1084,14 @@
         </div>
 
         <!-- Notification Modal -->
-        <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0" @click="showNotificationModal = false"
-                    class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity"></div>
+                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
                 <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
