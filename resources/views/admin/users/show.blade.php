@@ -899,7 +899,7 @@
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form action="{{ route('admin.users.change-role', $user) }}" method="POST">
+                    <form action="{{ route('admin.users.change-role', $user) }}" method="POST" x-data="{ role: '{{ old('role', $user->role) }}' }">
                         @csrf
                         <div class="bg-white px-6 pt-6 pb-4">
                             <div class="flex items-center gap-4">
@@ -918,8 +918,9 @@
                             </div>
                             <div class="mt-6 space-y-3">
                                 <label
-                                    class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
-                                    <input type="radio" name="role" value="admin" {{ $user->role === 'admin' ? 'checked' : '' }} class="w-4 h-4 text-red-600">
+                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                    :class="{ 'border-red-400 bg-red-50': role === 'admin', 'border-gray-200': role !== 'admin' }">
+                                    <input type="radio" name="role" value="admin" x-model="role" class="w-4 h-4 text-red-600 peer sr-only">
                                     <div class="flex items-center gap-2">
                                         <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                                             <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -935,9 +936,10 @@
                                     </div>
                                 </label>
                                 <label
-                                    class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
-                                    <input type="radio" name="role" value="guru" {{ $user->role === 'guru' ? 'checked' : '' }}
-                                        class="w-4 h-4 text-blue-600">
+                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                    :class="{ 'border-blue-400 bg-blue-50': role === 'guru', 'border-gray-200': role !== 'guru' }">
+                                    <input type="radio" name="role" value="guru" x-model="role"
+                                        class="w-4 h-4 text-blue-600 peer sr-only">
                                     <div class="flex items-center gap-2">
                                         <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                                             <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -952,8 +954,9 @@
                                     </div>
                                 </label>
                                 <label
-                                    class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
-                                    <input type="radio" name="role" value="siswa" {{ $user->role === 'siswa' ? 'checked' : '' }} class="w-4 h-4 text-emerald-600">
+                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                    :class="{ 'border-emerald-400 bg-emerald-50': role === 'siswa', 'border-gray-200': role !== 'siswa' }">
+                                    <input type="radio" name="role" value="siswa" x-model="role" class="w-4 h-4 text-emerald-600 peer sr-only">
                                     <div class="flex items-center gap-2">
                                         <span class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                                             <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
