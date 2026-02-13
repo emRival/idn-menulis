@@ -88,6 +88,14 @@
             padding-left: 1.5rem;
         }
 
+        .article-content ul {
+            list-style-type: disc;
+        }
+
+        .article-content ol {
+            list-style-type: decimal;
+        }
+
         .article-content li {
             margin-bottom: 0.5rem;
         }
@@ -417,7 +425,7 @@
                                     <h3 class="text-xl font-bold text-gray-900">{{ $article->user->full_name }}</h3>
                                     <span
                                         class="px-2 py-0.5 text-xs font-medium rounded-full
-                                                        {{ $article->user->role === 'admin' ? 'bg-red-100 text-red-700' : ($article->user->role === 'guru' ? 'bg-blue-100 text-blue-700' : 'bg-primary-100 text-primary-700') }}">
+                                                            {{ $article->user->role === 'admin' ? 'bg-red-100 text-red-700' : ($article->user->role === 'guru' ? 'bg-blue-100 text-blue-700' : 'bg-primary-100 text-primary-700') }}">
                                         {{ ucfirst($article->user->role) }}
                                     </span>
                                 </div>
