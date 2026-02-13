@@ -883,7 +883,7 @@
         </div>
 
         <!-- Change Role Modal -->
-        <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
@@ -985,7 +985,7 @@
         </div>
 
         <!-- Suspend Modal -->
-        <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
@@ -1036,7 +1036,7 @@
         </div>
 
         <!-- Delete Modal -->
-        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
@@ -1087,7 +1087,7 @@
         </div>
 
         <!-- Notification Modal -->
-        <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" aria-labelledby="modal-title"
+        <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
             role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
