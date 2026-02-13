@@ -883,266 +883,280 @@
         </div>
 
         <!-- Change Role Modal -->
-        <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
-            role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" @click="showChangeRoleModal = false"
-                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form action="{{ route('admin.users.change-role', $user) }}" method="POST" x-data="{ role: '{{ old('role', $user->role) }}' }">
-                        @csrf
-                        <div class="bg-white px-6 pt-6 pb-4">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-bold text-gray-900">Ubah Role</h3>
-                                    <p class="text-sm text-gray-500">Untuk: {{ $user->full_name }}</p>
-                                </div>
-                            </div>
-                            <div class="mt-6 space-y-3">
-                                <label
-                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
-                                    :class="{ 'border-red-400 bg-red-50': role === 'admin', 'border-gray-200': role !== 'admin' }">
-                                    <input type="radio" name="role" value="admin" x-model="role" class="w-4 h-4 text-red-600 peer sr-only">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </span>
-                                        <div>
-                                            <p class="font-medium text-gray-900">Admin</p>
-                                            <p class="text-xs text-gray-500">Akses penuh ke semua fitur</p>
-                                        </div>
-                                    </div>
-                                </label>
-                                <label
-                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
-                                    :class="{ 'border-blue-400 bg-blue-50': role === 'guru', 'border-gray-200': role !== 'guru' }">
-                                    <input type="radio" name="role" value="guru" x-model="role"
-                                        class="w-4 h-4 text-blue-600 peer sr-only">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
-                                            </svg>
-                                        </span>
-                                        <div>
-                                            <p class="font-medium text-gray-900">Guru</p>
-                                            <p class="text-xs text-gray-500">Review & moderasi artikel</p>
-                                        </div>
-                                    </div>
-                                </label>
-                                <label
-                                    class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
-                                    :class="{ 'border-emerald-400 bg-emerald-50': role === 'siswa', 'border-gray-200': role !== 'siswa' }">
-                                    <input type="radio" name="role" value="siswa" x-model="role" class="w-4 h-4 text-emerald-600 peer sr-only">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </span>
-                                        <div>
-                                            <p class="font-medium text-gray-900">Siswa</p>
-                                            <p class="text-xs text-gray-500">Menulis & membaca artikel</p>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                            <button type="button" @click="showChangeRoleModal = false"
-                                class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                            <button type="submit"
-                                class="px-4 py-2.5 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 transition-colors">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Suspend Modal -->
-        <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
-            role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" @click="showSuspendModal = false"
-                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form action="{{ route('admin.users.deactivate', $user) }}" method="POST">
-                        @csrf
-                        <div class="bg-white px-6 pt-6 pb-4">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-bold text-gray-900">Suspend Pengguna</h3>
-                                    <p class="text-sm text-gray-500">{{ $user->full_name }} akan dinonaktifkan</p>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <p class="text-gray-600 text-sm">Pengguna yang disuspend tidak akan dapat login dan
-                                    mengakses platform. Anda dapat mengaktifkan kembali akun ini kapan saja.</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                            <button type="button" @click="showSuspendModal = false"
-                                class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                            <button type="submit"
-                                class="px-4 py-2.5 bg-yellow-500 text-white font-medium rounded-xl hover:bg-yellow-600 transition-colors">Ya,
-                                Suspend</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete Modal -->
-        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
-            role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" @click="showDeleteModal = false"
-                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <div class="bg-white px-6 pt-6 pb-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-900">Hapus Akun</h3>
-                                <p class="text-sm text-gray-500">Tindakan ini tidak dapat dibatalkan</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 text-sm">Anda yakin ingin menghapus akun <span
-                                    class="font-semibold text-gray-900">{{ $user->full_name }}</span>? Semua data terkait
-                                termasuk artikel dan komentar akan dihapus secara permanen.</p>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                        <button type="button" @click="showDeleteModal = false"
-                            class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline">
+        <template x-teleport="body">
+            <div x-show="showChangeRoleModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
+                role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="showChangeRoleModal = false"
+                        class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                    <div x-show="showChangeRoleModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <form action="{{ route('admin.users.change-role', $user) }}" method="POST"
+                            x-data="{ role: '{{ old('role', $user->role) }}' }">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors">Ya,
-                                Hapus</button>
+                            <div class="bg-white px-6 pt-6 pb-4">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-900">Ubah Role</h3>
+                                        <p class="text-sm text-gray-500">Untuk: {{ $user->full_name }}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 space-y-3">
+                                    <label
+                                        class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                        :class="{ 'border-red-400 bg-red-50': role === 'admin', 'border-gray-200': role !== 'admin' }">
+                                        <input type="radio" name="role" value="admin" x-model="role"
+                                            class="w-4 h-4 text-red-600 peer sr-only">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-red-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Admin</p>
+                                                <p class="text-xs text-gray-500">Akses penuh ke semua fitur</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                        :class="{ 'border-blue-400 bg-blue-50': role === 'guru', 'border-gray-200': role !== 'guru' }">
+                                        <input type="radio" name="role" value="guru" x-model="role"
+                                            class="w-4 h-4 text-blue-600 peer sr-only">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-blue-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Guru</p>
+                                                <p class="text-xs text-gray-500">Review & moderasi artikel</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label
+                                        class="flex items-center gap-3 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors"
+                                        :class="{ 'border-emerald-400 bg-emerald-50': role === 'siswa', 'border-gray-200': role !== 'siswa' }">
+                                        <input type="radio" name="role" value="siswa" x-model="role"
+                                            class="w-4 h-4 text-emerald-600 peer sr-only">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-emerald-600" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Siswa</p>
+                                                <p class="text-xs text-gray-500">Menulis & membaca artikel</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                                <button type="button" @click="showChangeRoleModal = false"
+                                    class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2.5 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 transition-colors">Simpan</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </template>
 
-        <!-- Notification Modal -->
-        <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
-            role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" @click="showNotificationModal = false"
-                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form action="{{ route('admin.users.notify', $user) }}" method="POST">
-                        @csrf
+        <!-- Suspend Modal -->
+        <template x-teleport="body">
+            <div x-show="showSuspendModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
+                role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="showSuspendModal = false"
+                        class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                    <div x-show="showSuspendModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <form action="{{ route('admin.users.deactivate', $user) }}" method="POST">
+                            @csrf
+                            <div class="bg-white px-6 pt-6 pb-4">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-900">Suspend Pengguna</h3>
+                                        <p class="text-sm text-gray-500">{{ $user->full_name }} akan dinonaktifkan</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <p class="text-gray-600 text-sm">Pengguna yang disuspend tidak akan dapat login dan
+                                        mengakses platform. Anda dapat mengaktifkan kembali akun ini kapan saja.</p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                                <button type="button" @click="showSuspendModal = false"
+                                    class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2.5 bg-yellow-500 text-white font-medium rounded-xl hover:bg-yellow-600 transition-colors">Ya,
+                                    Suspend</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Delete Modal -->
+        <template x-teleport="body">
+            <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
+                role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="showDeleteModal = false"
+                        class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                    <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                         <div class="bg-white px-6 pt-6 pb-4">
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-bold text-gray-900">Kirim Notifikasi</h3>
-                                    <p class="text-sm text-gray-500">Kepada: {{ $user->full_name }}</p>
+                                    <h3 class="text-lg font-bold text-gray-900">Hapus Akun</h3>
+                                    <p class="text-sm text-gray-500">Tindakan ini tidak dapat dibatalkan</p>
                                 </div>
                             </div>
-                            <div class="mt-6 space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
-                                    <input type="text" name="title" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-                                        placeholder="Judul notifikasi...">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pesan</label>
-                                    <textarea name="message" rows="3" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
-                                        placeholder="Isi pesan..."></textarea>
-                                </div>
+                            <div class="mt-4">
+                                <p class="text-gray-600 text-sm">Anda yakin ingin menghapus akun <span
+                                        class="font-semibold text-gray-900">{{ $user->full_name }}</span>? Semua data terkait
+                                    termasuk artikel dan komentar akan dihapus secara permanen.</p>
                             </div>
                         </div>
                         <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                            <button type="button" @click="showNotificationModal = false"
+                            <button type="button" @click="showDeleteModal = false"
                                 class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                            <button type="submit"
-                                class="px-4 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors">Kirim</button>
+                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors">Ya,
+                                    Hapus</button>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
+
+        <!-- Notification Modal -->
+        <template x-teleport="body">
+            <div x-show="showNotificationModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title"
+                role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="showNotificationModal = false"
+                        class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                    <div x-show="showNotificationModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <form action="{{ route('admin.users.notify', $user) }}" method="POST">
+                            @csrf
+                            <div class="bg-white px-6 pt-6 pb-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-900">Kirim Notifikasi</h3>
+                                        <p class="text-sm text-gray-500">Kepada: {{ $user->full_name }}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6 space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul</label>
+                                        <input type="text" name="title" required
+                                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                                            placeholder="Judul notifikasi...">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Pesan</label>
+                                        <textarea name="message" rows="3" required
+                                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
+                                            placeholder="Isi pesan..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                                <button type="button" @click="showNotificationModal = false"
+                                    class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors">Kirim</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 
     <script>
