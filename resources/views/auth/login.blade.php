@@ -252,8 +252,14 @@
                         @enderror
                     </div>
 
+                    <!-- Turnstile Widget -->
+                    <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key', env('TURNSTILE_SITE_KEY')) }}" data-theme="light"></div>
+                    @error('cf-turnstile-response')
+                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+
                     <!-- Remember Me -->
-                    <div class="flex items-center">
+                    <div class="flex items-center mt-4">
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <div class="relative">
                                 <input
@@ -315,3 +321,7 @@ function loginForm() {
 }
 </script>
 @endsection
+
+@push('scripts')
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+@endpush

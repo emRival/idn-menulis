@@ -38,6 +38,20 @@ Route::middleware(['guest'])->group(function () {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'cf-turnstile-response' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                        'secret' => config('services.turnstile.secret', env('TURNSTILE_SECRET_KEY')),
+                        'response' => $value,
+                        'remoteip' => request()->ip(),
+                    ]);
+
+                    if (!$response->json('success')) {
+                        $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                    }
+                }
+            ],
         ]);
 
         // Rate limiting check with progressive delay
@@ -178,7 +192,7 @@ Route::middleware(['guest'])->group(function () {
         ]);
     });
 
-    Route::middleware(['check.registration'])->group(function () {
+    Route::middleware(['check.registration', 'throttle:6,1'])->group(function () {
         Route::get('/register', function () {
             return view('auth.register');
         })->name('register');
@@ -189,6 +203,20 @@ Route::middleware(['guest'])->group(function () {
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8|confirmed',
                 'full_name' => 'required|string|min:3',
+                'cf-turnstile-response' => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                            'secret' => config('services.turnstile.secret', env('TURNSTILE_SECRET_KEY')),
+                            'response' => $value,
+                            'remoteip' => request()->ip(),
+                        ]);
+
+                        if (!$response->json('success')) {
+                            $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                        }
+                    }
+                ],
             ]);
 
             $user = \App\Models\User::create([
