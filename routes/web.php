@@ -35,14 +35,17 @@ Route::middleware(['guest'])->group(function () {
     })->name('login');
 
     Route::post('/login', function (\Illuminate\Http\Request $request) {
-        $credentials = $request->validate([
+        $rules = [
             'email' => 'required|email',
             'password' => 'required',
-            'cf-turnstile-response' => [
+        ];
+
+        if (config('services.turnstile.secret')) {
+            $rules['cf-turnstile-response'] = [
                 'required',
                 function ($attribute, $value, $fail) {
                     $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                        'secret' => config('services.turnstile.secret', env('TURNSTILE_SECRET_KEY')),
+                        'secret' => config('services.turnstile.secret'),
                         'response' => $value,
                         'remoteip' => request()->ip(),
                     ]);
@@ -51,8 +54,10 @@ Route::middleware(['guest'])->group(function () {
                         $fail('Validasi Captcha gagal. Silakan coba lagi.');
                     }
                 }
-            ],
-        ]);
+            ];
+        }
+
+        $credentials = $request->validate($rules);
 
         // Rate limiting check with progressive delay
         $throttleKey = 'login_attempt_' . $request->ip();
@@ -198,16 +203,19 @@ Route::middleware(['guest'])->group(function () {
         })->name('register');
 
         Route::post('/register', function (\Illuminate\Http\Request $request) {
-            $validated = $request->validate([
+            $rules = [
                 'username' => 'required|alpha_dash|min:4|max:50|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8|confirmed',
                 'full_name' => 'required|string|min:3',
-                'cf-turnstile-response' => [
+            ];
+
+            if (config('services.turnstile.secret')) {
+                $rules['cf-turnstile-response'] = [
                     'required',
                     function ($attribute, $value, $fail) {
                         $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                            'secret' => config('services.turnstile.secret', env('TURNSTILE_SECRET_KEY')),
+                            'secret' => config('services.turnstile.secret'),
                             'response' => $value,
                             'remoteip' => request()->ip(),
                         ]);
@@ -216,8 +224,10 @@ Route::middleware(['guest'])->group(function () {
                             $fail('Validasi Captcha gagal. Silakan coba lagi.');
                         }
                     }
-                ],
-            ]);
+                ];
+            }
+
+            $validated = $request->validate($rules);
 
             $user = \App\Models\User::create([
                 'username' => $validated['username'],

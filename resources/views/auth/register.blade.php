@@ -309,12 +309,13 @@
                         </div>
 
                         <!-- Turnstile Widget -->
-                        <div class="cf-turnstile"
-                            data-sitekey="{{ config('services.turnstile.key', env('TURNSTILE_SITE_KEY')) }}"
-                            data-theme="light"></div>
-                        @error('cf-turnstile-response')
-                            <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                        @if(config('services.turnstile.key'))
+                            <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key') }}" data-theme="light">
+                            </div>
+                            @error('cf-turnstile-response')
+                                <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        @endif
 
                         <!-- Submit Button -->
                         <button type="submit" :disabled="isSubmitting"
@@ -356,5 +357,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @if(config('services.turnstile.key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
 @endpush
