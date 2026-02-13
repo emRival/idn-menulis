@@ -44,14 +44,20 @@ Route::middleware(['guest'])->group(function () {
             $rules['cf-turnstile-response'] = [
                 'required',
                 function ($attribute, $value, $fail) {
-                    $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                        'secret' => config('services.turnstile.secret'),
-                        'response' => $value,
-                        'remoteip' => request()->ip(),
-                    ]);
+                    try {
+                        $response = \Illuminate\Support\Facades\Http::timeout(5)->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                            'secret' => config('services.turnstile.secret'),
+                            'response' => $value,
+                            'remoteip' => request()->ip(),
+                        ]);
 
-                    if (!$response->json('success')) {
-                        $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                        if (!$response->successful() || !$response->json('success')) {
+                            $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                        }
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Turnstile Validation Error: ' . $e->getMessage());
+                        // Fail gracefully or strictly? strictly for security.
+                        $fail('Gagal menghubungi server validasi Captcha. Cek koneksi internet server.');
                     }
                 }
             ];
@@ -63,6 +69,9 @@ Route::middleware(['guest'])->group(function () {
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
         ]);
+
+        // Remove Turnstile response from credentials to prevent SQL error
+        unset($credentials['cf-turnstile-response']);
 
         // Rate limiting check with progressive delay
         $throttleKey = 'login_attempt_' . $request->ip();
@@ -219,14 +228,19 @@ Route::middleware(['guest'])->group(function () {
                 $rules['cf-turnstile-response'] = [
                     'required',
                     function ($attribute, $value, $fail) {
-                        $response = \Illuminate\Support\Facades\Http::post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-                            'secret' => config('services.turnstile.secret'),
-                            'response' => $value,
-                            'remoteip' => request()->ip(),
-                        ]);
+                        try {
+                            $response = \Illuminate\Support\Facades\Http::timeout(5)->post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                                'secret' => config('services.turnstile.secret'),
+                                'response' => $value,
+                                'remoteip' => request()->ip(),
+                            ]);
 
-                        if (!$response->json('success')) {
-                            $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                            if (!$response->successful() || !$response->json('success')) {
+                                $fail('Validasi Captcha gagal. Silakan coba lagi.');
+                            }
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('Turnstile Register Validation Error: ' . $e->getMessage());
+                            $fail('Gagal menghubungi server validasi Captcha. Cek koneksi internet server.');
                         }
                     }
                 ];

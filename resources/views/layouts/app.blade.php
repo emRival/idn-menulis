@@ -214,9 +214,9 @@
             $registrationEnabled = \App\Models\Setting::where('key', 'registration_enabled')->value('value') !== '0';
         @endphp
         <div x-data="{
-                                    get isOpen() { return Alpine.store('loginModal') },
-                                    set isOpen(value) { Alpine.store('loginModal', value) }
-                                }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false"
+                                        get isOpen() { return Alpine.store('loginModal') },
+                                        set isOpen(value) { Alpine.store('loginModal', value) }
+                                    }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false"
             x-cloak class="fixed inset-0 z-[9999] overflow-hidden" style="display: none;">
 
             <!-- Backdrop -->
@@ -308,6 +308,15 @@
                             </div>
                         </div>
 
+                        <!-- Turnstile Widget -->
+                        @if(config('services.turnstile.key'))
+                            <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.key') }}" data-theme="light">
+                            </div>
+                            @error('cf-turnstile-response')
+                                <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        @endif
+
                         <div class="flex items-center justify-between pt-2">
                             <label class="flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" name="remember"
@@ -387,7 +396,7 @@
                 console.warn('Security: Storing sensitive data in localStorage is not recommended');
             }
             return originalSetItem.apply(this, arguments);
-        };
+    };
 
 
     </script>
