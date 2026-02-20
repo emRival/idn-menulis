@@ -115,10 +115,10 @@
                             <!-- Role Badge -->
                             <div class="flex justify-center gap-2 mt-3">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium
-                                            @if($user->role === 'admin') bg-gradient-to-r from-red-500 to-rose-500 text-white
-                                            @elseif($user->role === 'guru') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
-                                            @else bg-gradient-to-r from-emerald-500 to-teal-500 text-white
-                                            @endif">
+                                                @if($user->role === 'admin') bg-gradient-to-r from-red-500 to-rose-500 text-white
+                                                @elseif($user->role === 'guru') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
+                                                @else bg-gradient-to-r from-emerald-500 to-teal-500 text-white
+                                                @endif">
                                     @if($user->role === 'admin')
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
@@ -443,10 +443,10 @@
                                                         <td class="px-4 py-3 text-gray-500 font-medium">Role</td>
                                                         <td class="px-4 py-3">
                                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                        @if($user->role === 'admin') bg-red-100 text-red-700
-                                                                        @elseif($user->role === 'guru') bg-blue-100 text-blue-700
-                                                                        @else bg-emerald-100 text-emerald-700
-                                                                        @endif">
+                                                                            @if($user->role === 'admin') bg-red-100 text-red-700
+                                                                            @elseif($user->role === 'guru') bg-blue-100 text-blue-700
+                                                                            @else bg-emerald-100 text-emerald-700
+                                                                            @endif">
                                                                 {{ ucfirst($user->role) }}
                                                             </span>
                                                         </td>
@@ -600,11 +600,11 @@
                                                         </td>
                                                         <td class="py-4">
                                                             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
-                                                                                        @if($article->status === 'published') bg-green-100 text-green-700
-                                                                                        @elseif($article->status === 'pending_review') bg-yellow-100 text-yellow-700
-                                                                                        @elseif($article->status === 'rejected') bg-red-100 text-red-700
-                                                                                        @else bg-gray-100 text-gray-700
-                                                                                        @endif">
+                                                                                                    @if($article->status === 'published') bg-green-100 text-green-700
+                                                                                                    @elseif($article->status === 'pending_review') bg-yellow-100 text-yellow-700
+                                                                                                    @elseif($article->status === 'rejected') bg-red-100 text-red-700
+                                                                                                    @else bg-gray-100 text-gray-700
+                                                                                                    @endif">
                                                                 @if($article->status === 'published')
                                                                     <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                                                                 @elseif($article->status === 'pending_review')
@@ -730,13 +730,13 @@
                                                 <div class="relative flex gap-4 pl-2">
                                                     <!-- Icon -->
                                                     <div class="relative z-10 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
-                                                                                @if(str_contains($log->action, 'login')) bg-green-500 text-white
-                                                                                @elseif(str_contains($log->action, 'publish') || str_contains($log->action, 'create')) bg-blue-500 text-white
-                                                                                @elseif(str_contains($log->action, 'edit') || str_contains($log->action, 'update')) bg-yellow-500 text-white
-                                                                                @elseif(str_contains($log->action, 'delete')) bg-red-500 text-white
-                                                                                @elseif(str_contains($log->action, 'comment')) bg-purple-500 text-white
-                                                                                @else bg-gray-400 text-white
-                                                                                @endif">
+                                                                                            @if(str_contains($log->action, 'login')) bg-green-500 text-white
+                                                                                            @elseif(str_contains($log->action, 'publish') || str_contains($log->action, 'create')) bg-blue-500 text-white
+                                                                                            @elseif(str_contains($log->action, 'edit') || str_contains($log->action, 'update')) bg-yellow-500 text-white
+                                                                                            @elseif(str_contains($log->action, 'delete')) bg-red-500 text-white
+                                                                                            @elseif(str_contains($log->action, 'comment')) bg-purple-500 text-white
+                                                                                            @else bg-gray-400 text-white
+                                                                                            @endif">
                                                         @if(str_contains($log->action, 'login'))
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -838,58 +838,61 @@
         </div>
 
         <!-- Reset Password Modal -->
-        <div x-show="showResetPasswordModal" x-cloak class="fixed inset-0 z-[60] overflow-y-auto"
-            aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                    x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0" @click="showResetPasswordModal = false"
-                    class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <form action="{{ route('admin.users.reset-password', $user) }}" method="POST">
-                        @csrf
-                        <div class="bg-white px-6 pt-6 pb-4">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                                    </svg>
+        <template x-teleport="body">
+            <div x-show="showResetPasswordModal" x-cloak class="fixed inset-0 z-[100] overflow-y-auto"
+                aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0" @click="showResetPasswordModal = false"
+                        class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                    <div x-show="showResetPasswordModal" x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        <form action="{{ route('admin.users.reset-password', $user) }}" method="POST">
+                            @csrf
+                            <div class="bg-white px-6 pt-6 pb-4">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-900">Reset Password</h3>
+                                        <p class="text-sm text-gray-500">Untuk: {{ $user->full_name }}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="text-lg font-bold text-gray-900">Reset Password</h3>
-                                    <p class="text-sm text-gray-500">Untuk: {{ $user->full_name }}</p>
+                                <div class="mt-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Password Baru
+                                        (kosongkan untuk
+                                        random)</label>
+                                    <input type="password" name="new_password"
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                                        placeholder="Masukkan password baru...">
                                 </div>
                             </div>
-                            <div class="mt-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Password Baru (kosongkan untuk
-                                    random)</label>
-                                <input type="password" name="new_password"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-                                    placeholder="Masukkan password baru...">
+                            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                                <button type="button" @click="showResetPasswordModal = false"
+                                    class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors">Reset
+                                    Password</button>
                             </div>
-                        </div>
-                        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                            <button type="button" @click="showResetPasswordModal = false"
-                                class="px-4 py-2.5 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors">Batal</button>
-                            <button type="submit"
-                                class="px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors">Reset
-                                Password</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
 
         <!-- Change Role Modal -->
         <template x-teleport="body">
