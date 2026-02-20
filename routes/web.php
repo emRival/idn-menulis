@@ -262,11 +262,11 @@ Route::middleware(['guest'])->group(function () {
         });
     });
 
-    // Password Reset Routes
-    Route::get('/lupa-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'create'])->name('password.request');
-    Route::post('/lupa-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'store'])->name('password.email');
-    Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\PasswordResetController::class, 'edit'])->name('password.reset');
-    Route::post('/reset-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'update'])->name('password.update');
+    // Password Reset Routes (Disabled)
+    // Route::get('/lupa-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'create'])->name('password.request');
+    // Route::post('/lupa-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'store'])->name('password.email');
+    // Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\PasswordResetController::class, 'edit'])->name('password.reset');
+    // Route::post('/reset-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'update'])->name('password.update');
 });
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {

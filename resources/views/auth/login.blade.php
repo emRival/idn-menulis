@@ -205,13 +205,10 @@
 
                     <!-- Password Input -->
                     <div>
-                        <div class="flex items-center justify-between mb-2">
+                        <div class="mb-2">
                             <label for="password" class="block text-sm font-medium text-gray-700">
                                 Password
                             </label>
-                            <a href="{{ route('password.request') }}" class="text-sm text-primary-600 hover:text-primary-700 font-medium hover:underline transition-colors">
-                                Lupa password?
-                            </a>
                         </div>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

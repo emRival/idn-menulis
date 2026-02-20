@@ -214,10 +214,11 @@
             $registrationEnabled = \App\Models\Setting::where('key', 'registration_enabled')->value('value') !== '0';
         @endphp
         <div x-data="{
-                                        get isOpen() { return Alpine.store('loginModal') },
-                                        set isOpen(value) { Alpine.store('loginModal', value) }
-                                    }" x-show="$store.loginModal" x-on:keydown.escape.window="$store.loginModal = false"
-            x-cloak class="fixed inset-0 z-[9999] overflow-hidden" style="display: none;">
+                                            get isOpen() { return Alpine.store('loginModal') },
+                                            set isOpen(value) { Alpine.store('loginModal', value) }
+                                        }" x-show="$store.loginModal"
+            x-on:keydown.escape.window="$store.loginModal = false" x-cloak class="fixed inset-0 z-[9999] overflow-hidden"
+            style="display: none;">
 
             <!-- Backdrop -->
             <div x-show="$store.loginModal" x-transition:enter="transition duration-300 ease-out"
@@ -275,10 +276,8 @@
                         </div>
 
                         <div>
-                            <div class="flex items-center justify-between mb-1">
+                            <div class="mb-1">
                                 <label class="block text-sm font-medium text-gray-700">Password</label>
-                                <a href="{{ route('password.request') }}"
-                                    class="text-xs font-medium text-primary-600 hover:text-primary-700">Lupa Password?</a>
                             </div>
                             <div class="relative" x-data="{ show: false }">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
@@ -396,14 +395,14 @@
                 console.warn('Security: Storing sensitive data in localStorage is not recommended');
             }
             return originalSetItem.apply(this, arguments);
-    };
+        };
 
 
     </script>
 
     @yield('scripts')
     @stack('scripts')
-    
+
     @guest
         @if(config('services.turnstile.key'))
             <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
