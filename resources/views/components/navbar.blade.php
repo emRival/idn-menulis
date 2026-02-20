@@ -128,13 +128,13 @@
                             </div>
                             <div class="max-h-80 overflow-y-auto">
                                 @forelse(auth()->user()->notifications()->take(5)->get() as $notification)
-                                    <a href="{{ isset($notification->data['link']) ? $notification->data['link'] : '#' }}"
-                                        class="block px-4 py-3 hover:bg-gray-50 transition-colors {{ $notification->read_at ? 'opacity-70' : '' }}">
+                                    <a href="{{ $notification->action_url ?? '#' }}"
+                                        class="block px-4 py-3 hover:bg-gray-50 transition-colors {{ $notification->is_read ? 'opacity-70' : '' }}">
                                         <p class="text-sm font-medium text-gray-900">
-                                            {{ $notification->data['title'] ?? 'Notifikasi Baru' }}</p>
-                                        <p class="text-xs text-gray-500 mt-1">{{ $notification->data['message'] ?? '' }}</p>
+                                            {{ $notification->title ?? 'Notifikasi Baru' }}</p>
+                                        <p class="text-xs text-gray-500 mt-1">{{ $notification->message ?? '' }}</p>
                                         <p class="text-[10px] text-gray-400 mt-1">
-                                            {{ $notification->created_at->diffForHumans() }}</p>
+                                            {{ $notification->created_at ? $notification->created_at->diffForHumans() : '' }}</p>
                                     </a>
                                 @empty
                                     <div class="px-4 py-6 text-center text-gray-500 text-sm">
