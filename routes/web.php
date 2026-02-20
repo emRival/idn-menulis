@@ -325,6 +325,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profil/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 
     // Notifications
+    Route::post('/notifikasi/baca-semua', function () {
+        auth()->user()->unreadNotifications->markAsRead();
+        return back()->with('success', 'Semua notifikasi telah ditandai sebagai sudah dibaca.');
+    })->name('notifications.markAllRead');
+
     Route::get('/notifikasi', function () {
         $notifications = auth()->user()->notifications()
             ->orderBy('created_at', 'desc')
