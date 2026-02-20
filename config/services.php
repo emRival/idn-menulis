@@ -40,4 +40,8 @@ return [
         'secret' => env('TURNSTILE_SECRET_KEY'),
     ],
 
+    'n8n' => [
+        'webhook_url' => env('SECURITY_WEBHOOK_URL'),
+    ],
+
 ];

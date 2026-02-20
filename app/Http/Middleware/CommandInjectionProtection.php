@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Jobs\SendSecurityWebhook;
 use Symfony\Component\HttpFoundation\Response;
 
 class CommandInjectionProtection
@@ -122,6 +125,15 @@ class CommandInjectionProtection
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $ip = $request->ip();
+
+        if (Cache::has('banned_ip_' . $ip)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Request ditolak. IP Anda telah diblokir sementara karena aktivitas mencurigakan.'
+            ], 403);
+        }
+
         $input = $request->except($this->skipFields);
 
         // Check for command injection
@@ -216,9 +228,11 @@ class CommandInjectionProtection
      */
     protected function logAttack(Request $request, string $type, string $field, string $value, string $pattern): void
     {
-        Log::channel('security')->critical("{$type} attempt detected", [
+        $ip = $request->ip();
+
+        $payload = [
             'type' => $type,
-            'ip' => $request->ip(),
+            'ip' => $ip,
             'user_agent' => $request->userAgent(),
             'url' => $request->fullUrl(),
             'field' => $field,
@@ -226,7 +240,22 @@ class CommandInjectionProtection
             'pattern' => $pattern,
             'user_id' => auth()->id(),
             'timestamp' => now()->toDateTimeString(),
-        ]);
+        ];
+
+        Log::channel('security')->critical("{$type} attempt detected", $payload);
+
+        // Auto-Ban checking (5 strikes per minute)
+        $strikeKey = 'security_strikes_' . $ip;
+        RateLimiter::hit($strikeKey, 60);
+
+        if (RateLimiter::tooManyAttempts($strikeKey, 5)) {
+            Cache::put('banned_ip_' . $ip, true, now()->addHours(24));
+            $payload['banned'] = true;
+            $payload['ban_duration'] = '24 hours';
+            Log::channel('security')->critical('IP Banned for 24 hours: ' . $ip);
+        }
+
+        dispatch(new SendSecurityWebhook($payload));
     }
 
     /**

@@ -115,10 +115,10 @@
                             <!-- Role Badge -->
                             <div class="flex justify-center gap-2 mt-3">
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium
-                                                @if($user->role === 'admin') bg-gradient-to-r from-red-500 to-rose-500 text-white
-                                                @elseif($user->role === 'guru') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
-                                                @else bg-gradient-to-r from-emerald-500 to-teal-500 text-white
-                                                @endif">
+                                                    @if($user->role === 'admin') bg-gradient-to-r from-red-500 to-rose-500 text-white
+                                                    @elseif($user->role === 'guru') bg-gradient-to-r from-blue-500 to-indigo-500 text-white
+                                                    @else bg-gradient-to-r from-emerald-500 to-teal-500 text-white
+                                                    @endif">
                                     @if($user->role === 'admin')
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
@@ -443,10 +443,10 @@
                                                         <td class="px-4 py-3 text-gray-500 font-medium">Role</td>
                                                         <td class="px-4 py-3">
                                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                            @if($user->role === 'admin') bg-red-100 text-red-700
-                                                                            @elseif($user->role === 'guru') bg-blue-100 text-blue-700
-                                                                            @else bg-emerald-100 text-emerald-700
-                                                                            @endif">
+                                                                                @if($user->role === 'admin') bg-red-100 text-red-700
+                                                                                @elseif($user->role === 'guru') bg-blue-100 text-blue-700
+                                                                                @else bg-emerald-100 text-emerald-700
+                                                                                @endif">
                                                                 {{ ucfirst($user->role) }}
                                                             </span>
                                                         </td>
@@ -600,11 +600,11 @@
                                                         </td>
                                                         <td class="py-4">
                                                             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
-                                                                                                    @if($article->status === 'published') bg-green-100 text-green-700
-                                                                                                    @elseif($article->status === 'pending_review') bg-yellow-100 text-yellow-700
-                                                                                                    @elseif($article->status === 'rejected') bg-red-100 text-red-700
-                                                                                                    @else bg-gray-100 text-gray-700
-                                                                                                    @endif">
+                                                                                                                @if($article->status === 'published') bg-green-100 text-green-700
+                                                                                                                @elseif($article->status === 'pending_review') bg-yellow-100 text-yellow-700
+                                                                                                                @elseif($article->status === 'rejected') bg-red-100 text-red-700
+                                                                                                                @else bg-gray-100 text-gray-700
+                                                                                                                @endif">
                                                                 @if($article->status === 'published')
                                                                     <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                                                                 @elseif($article->status === 'pending_review')
@@ -730,13 +730,13 @@
                                                 <div class="relative flex gap-4 pl-2">
                                                     <!-- Icon -->
                                                     <div class="relative z-10 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0
-                                                                                            @if(str_contains($log->action, 'login')) bg-green-500 text-white
-                                                                                            @elseif(str_contains($log->action, 'publish') || str_contains($log->action, 'create')) bg-blue-500 text-white
-                                                                                            @elseif(str_contains($log->action, 'edit') || str_contains($log->action, 'update')) bg-yellow-500 text-white
-                                                                                            @elseif(str_contains($log->action, 'delete')) bg-red-500 text-white
-                                                                                            @elseif(str_contains($log->action, 'comment')) bg-purple-500 text-white
-                                                                                            @else bg-gray-400 text-white
-                                                                                            @endif">
+                                                                                                        @if(str_contains($log->action, 'login')) bg-green-500 text-white
+                                                                                                        @elseif(str_contains($log->action, 'publish') || str_contains($log->action, 'create')) bg-blue-500 text-white
+                                                                                                        @elseif(str_contains($log->action, 'edit') || str_contains($log->action, 'update')) bg-yellow-500 text-white
+                                                                                                        @elseif(str_contains($log->action, 'delete')) bg-red-500 text-white
+                                                                                                        @elseif(str_contains($log->action, 'comment')) bg-purple-500 text-white
+                                                                                                        @else bg-gray-400 text-white
+                                                                                                        @endif">
                                                         @if(str_contains($log->action, 'login'))
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -854,7 +854,7 @@
                         x-transition:leave="ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                        class="relative z-10 inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                         <form action="{{ route('admin.users.reset-password', $user) }}" method="POST">
                             @csrf
                             <div class="bg-white px-6 pt-6 pb-4">
