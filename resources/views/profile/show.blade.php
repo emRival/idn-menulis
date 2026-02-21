@@ -576,7 +576,7 @@
 
                         @if($stats['total_articles'] > 5)
                             <div class="mt-6 text-center">
-                                <a href="{{ route('articles.my') }}" class="text-blue-600 hover:text-blue-700 font-medium">
+                                <a href="{{ route('dashboard.articles') }}" class="text-blue-600 hover:text-blue-700 font-medium">
                                     Lihat Semua Artikel →
                                 </a>
                             </div>
