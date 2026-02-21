@@ -326,7 +326,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Notifications
     Route::post('/notifikasi/baca-semua', function () {
-        auth()->user()->unreadNotifications->markAsRead();
+        auth()->user()->notifications()->where('is_read', false)->update(['is_read' => true]);
         return back()->with('success', 'Semua notifikasi telah ditandai sebagai sudah dibaca.');
     })->name('notifications.markAllRead');
 
