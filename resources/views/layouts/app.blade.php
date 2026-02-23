@@ -9,6 +9,9 @@
     <!-- CSRF Token - Required for AJAX requests -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Structured Data -->
+    @include('partials.schema')
+
     <!-- Primary Meta Tags -->
     <title>@yield('title', 'IDN Menulis - Platform Menulis Indonesia')</title>
     <meta name="title" content="@yield('meta_title', 'IDN Menulis - Platform Menulis Indonesia')">
@@ -214,9 +217,9 @@
             $registrationEnabled = \App\Models\Setting::where('key', 'registration_enabled')->value('value') !== '0';
         @endphp
         <div x-data="{
-                                            get isOpen() { return Alpine.store('loginModal') },
-                                            set isOpen(value) { Alpine.store('loginModal', value) }
-                                        }" x-show="$store.loginModal"
+                                                get isOpen() { return Alpine.store('loginModal') },
+                                                set isOpen(value) { Alpine.store('loginModal', value) }
+                                            }" x-show="$store.loginModal"
             x-on:keydown.escape.window="$store.loginModal = false" x-cloak class="fixed inset-0 z-[9999] overflow-hidden"
             style="display: none;">
 
