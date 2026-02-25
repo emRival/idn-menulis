@@ -1,7 +1,7 @@
 <!-- Website Schema -->
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "WebSite",
     "name": "IDN Menulis",
     "url": "{{ config('app.url') }}",
@@ -17,7 +17,7 @@
 <!-- Article Schema -->
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "Article",
     "headline": "{{ $article->title }}",
     "description": "{{ Str::limit(strip_tags($article->content), 160) }}",
@@ -47,7 +47,7 @@
 <!-- Organization Schema -->
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "Organization",
     "name": "IDN Menulis",
     "url": "{{ config('app.url') }}",

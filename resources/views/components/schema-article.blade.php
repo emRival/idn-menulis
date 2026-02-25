@@ -17,7 +17,7 @@
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "Article",
     "headline": "{{ e($article->title) }}",
     "description": "{{ e($article->excerpt ?? Str::limit(strip_tags($article->content), 160)) }}",

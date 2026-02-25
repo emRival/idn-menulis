@@ -1,6 +1,6 @@
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "Organization",
     "name": "{{ config('seo.organization.name', config('app.name')) }}",
     "url": "{{ config('seo.site_url', url('/')) }}",
@@ -36,7 +36,7 @@
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "WebSite",
     "name": "{{ config('seo.site_name', config('app.name')) }}",
     "url": "{{ config('seo.site_url', url('/')) }}",
