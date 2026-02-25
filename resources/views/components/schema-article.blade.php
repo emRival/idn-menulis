@@ -10,9 +10,9 @@
     $imageUrl = $article->featured_image
         ? (str_starts_with($article->featured_image, 'http') ? $article->featured_image : url($article->featured_image))
         : url(config('seo.default_image'));
-    $authorName = $author?->name ?? $article->author?->name ?? config('seo.site_author');
+    $authorName = $author?->name ?? $article->user?->name ?? config('seo.site_author');
     $authorUrl = $author ? route('profile.show', $author->id) :
-        ($article->author ? route('profile.show', $article->author->id) : config('seo.site_url'));
+        ($article->user ? route('profile.show', $article->user->id) : config('seo.site_url'));
 @endphp
 
 <script type="application/ld+json">

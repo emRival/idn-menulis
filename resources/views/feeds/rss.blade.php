@@ -29,8 +29,8 @@
             <description><![CDATA[{{ $article->excerpt ?? Str::limit(strip_tags($article->content), 300) }}]]></description>
             <content:encoded><![CDATA[{!! $article->content !!}]]></content:encoded>
             <pubDate>{{ $article->created_at->toRfc2822String() }}</pubDate>
-            @if($article->author)
-            <dc:creator><![CDATA[{{ $article->author->name }}]]></dc:creator>
+            @if($article->user)
+            <dc:creator><![CDATA[{{ $article->user->full_name }}]]></dc:creator>
             @endif
             @if($article->category)
             <category><![CDATA[{{ $article->category->name }}]]></category>

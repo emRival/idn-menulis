@@ -21,10 +21,10 @@
         <updated>{{ $article->updated_at->toIso8601String() }}</updated>
         <summary type="html"><![CDATA[{{ $article->excerpt ?? Str::limit(strip_tags($article->content), 300) }}]]></summary>
         <content type="html"><![CDATA[{!! $article->content !!}]]></content>
-        @if($article->author)
+        @if($article->user)
         <author>
-            <name>{{ $article->author->name }}</name>
-            <uri>{{ route('profile.show', $article->author->id) }}</uri>
+            <name>{{ $article->user->full_name }}</name>
+            <uri>{{ route('profile.show', $article->user->id) }}</uri>
         </author>
         @endif
         @if($article->category)

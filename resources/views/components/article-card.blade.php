@@ -62,21 +62,21 @@
         </p>
         @endif
 
-        @if($article->author)
+        @if($article->user)
         <div class="mt-4 flex items-center" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            @if($article->author->avatar)
+            @if($article->user->avatar)
             <img
-                src="{{ asset($article->author->avatar) }}"
-                alt="{{ $article->author->name }}"
+                src="{{ asset($article->user->avatar) }}"
+                alt="{{ $article->user->full_name }}"
                 class="w-8 h-8 rounded-full mr-2"
                 loading="lazy"
             >
             @else
             <div class="w-8 h-8 rounded-full bg-gray-300 mr-2 flex items-center justify-center">
-                <span class="text-sm text-gray-600">{{ substr($article->author->name, 0, 1) }}</span>
+                <span class="text-sm text-gray-600">{{ substr($article->user->full_name, 0, 1) }}</span>
             </div>
             @endif
-            <span class="text-sm text-gray-700" itemprop="name">{{ $article->author->name }}</span>
+            <span class="text-sm text-gray-700" itemprop="name">{{ $article->user->full_name }}</span>
         </div>
         @endif
     </div>

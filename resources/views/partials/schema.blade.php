@@ -24,7 +24,7 @@
     "image": "{{ $article->featured_image }}",
     "author": {
         "@type": "Person",
-        "name": "{{ $article->author->name }}"
+        "name": "{{ $article->user->full_name }}"
     },
     "publisher": {
         "@type": "Organization",
