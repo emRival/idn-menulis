@@ -20,11 +20,24 @@ class ThrottleLogin
         $config = config('security.rate_limits.login');
         $key = $this->throttleKey($request);
         $ip = $request->ip();
+        $email = strtolower($request->input('email', ''));
 
-        // Check if IP is permanently blocked
+        // Check if this specific email+IP combination is blocked
+        if ($email && Cache::has("blocked_login:{$ip}:{$email}")) {
+            $this->logSecurityEvent('blocked_login_access', $request, [
+                'reason' => 'Email+IP combination is blocked'
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun Anda telah diblokir sementara karena terlalu banyak percobaan login gagal. Silakan coba lagi nanti atau hubungi administrator.'
+            ], 429);
+        }
+
+        // Check if entire IP is blocked (extreme brute-force across multiple emails)
         if (Cache::has("blocked_ip:{$ip}")) {
             $this->logSecurityEvent('blocked_ip_access', $request, [
-                'reason' => 'IP is blocked'
+                'reason' => 'IP is blocked due to extreme brute-force'
             ]);
 
             return response()->json([
@@ -33,7 +46,7 @@ class ThrottleLogin
             ], 429);
         }
 
-        // Check rate limit
+        // Check rate limit per email+IP
         if (RateLimiter::tooManyAttempts($key, $config['max_attempts'])) {
             $seconds = RateLimiter::availableIn($key);
 
@@ -42,14 +55,20 @@ class ThrottleLogin
                 'blocked_for' => $seconds
             ]);
 
-            // Block IP after excessive attempts
-            $totalAttempts = Cache::increment("login_attempts:{$ip}");
+            // Block this specific email+IP after excessive attempts
+            $emailIpAttempts = Cache::increment("login_attempts:{$ip}:{$email}");
 
-            if ($totalAttempts >= $config['max_attempts'] * 3) {
-                Cache::put("blocked_ip:{$ip}", true, now()->addMinutes($config['block_minutes']));
+            if ($emailIpAttempts >= $config['max_attempts'] * 3) {
+                Cache::put("blocked_login:{$ip}:{$email}", true, now()->addMinutes($config['block_minutes']));
 
-                // Notify admin about brute force attack
-                $this->notifyAdmin($request, $totalAttempts);
+                // Also track total attempts from this IP across all emails
+                $totalIpAttempts = Cache::increment("login_attempts_total:{$ip}");
+
+                // Only block entire IP if extreme brute-force across multiple emails
+                if ($totalIpAttempts >= $config['max_attempts'] * 10) {
+                    Cache::put("blocked_ip:{$ip}", true, now()->addMinutes($config['block_minutes']));
+                    $this->notifyAdmin($request, $totalIpAttempts);
+                }
             }
 
             return response()->json([
@@ -62,15 +81,18 @@ class ThrottleLogin
         $response = $next($request);
 
         // If login failed, increment the counter
-        if ($response->getStatusCode() === 401 ||
+        if (
+            $response->getStatusCode() === 401 ||
             (method_exists($response, 'getData') &&
-             isset($response->getData()->success) &&
-             $response->getData()->success === false)) {
+                isset($response->getData()->success) &&
+                $response->getData()->success === false)
+        ) {
             RateLimiter::hit($key, $config['decay_minutes'] * 60);
         } else {
-            // Successful login - clear rate limiter
+            // Successful login - clear rate limiter for this email+IP
             RateLimiter::clear($key);
-            Cache::forget("login_attempts:{$ip}");
+            Cache::forget("login_attempts:{$ip}:{$email}");
+            Cache::forget("blocked_login:{$ip}:{$email}");
         }
 
         return $response;

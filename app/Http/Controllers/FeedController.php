@@ -15,8 +15,8 @@ class FeedController extends Controller
     {
         $content = Cache::remember('rss_feed', now()->addHours(1), function () {
             $articles = Article::where('status', 'published')
-                ->with(['author:id,name', 'category:id,name'])
-                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'author_id', 'category_id')
+                ->with(['user:id,name', 'category:id,name'])
+                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'user_id', 'category_id')
                 ->orderBy('created_at', 'desc')
                 ->limit(50)
                 ->get();
@@ -40,8 +40,8 @@ class FeedController extends Controller
     {
         $content = Cache::remember('atom_feed', now()->addHours(1), function () {
             $articles = Article::where('status', 'published')
-                ->with(['author:id,name', 'category:id,name'])
-                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'author_id', 'category_id')
+                ->with(['user:id,name', 'category:id,name'])
+                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'user_id', 'category_id')
                 ->orderBy('created_at', 'desc')
                 ->limit(50)
                 ->get();
@@ -65,8 +65,8 @@ class FeedController extends Controller
     {
         $content = Cache::remember('json_feed', now()->addHours(1), function () {
             $articles = Article::where('status', 'published')
-                ->with(['author:id,name', 'category:id,name'])
-                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'author_id', 'category_id')
+                ->with(['user:id,name', 'category:id,name'])
+                ->select('id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'created_at', 'updated_at', 'user_id', 'category_id')
                 ->orderBy('created_at', 'desc')
                 ->limit(50)
                 ->get();
@@ -82,10 +82,10 @@ class FeedController extends Controller
                     'date_modified' => $article->updated_at->toIso8601String(),
                 ];
 
-                if ($article->author) {
+                if ($article->user) {
                     $item['author'] = [
-                        'name' => $article->author->name,
-                        'url' => route('profile.show', $article->author->id),
+                        'name' => $article->user->name,
+                        'url' => route('profile.show', $article->user->id),
                     ];
                 }
 

@@ -102,8 +102,8 @@ class SitemapController extends Controller
     {
         $content = Cache::remember('sitemap_articles', now()->addHours(6), function () {
             $articles = Article::where('status', 'published')
-                ->with(['category:id,slug', 'tags:id,slug', 'author:id,name'])
-                ->select('id', 'title', 'slug', 'featured_image', 'created_at', 'updated_at', 'category_id', 'author_id')
+                ->with(['category:id,slug', 'tags:id,slug', 'user:id,name'])
+                ->select('id', 'title', 'slug', 'featured_image', 'created_at', 'updated_at', 'category_id', 'user_id')
                 ->orderBy('updated_at', 'desc')
                 ->get()
                 ->map(function ($article) {
@@ -129,9 +129,11 @@ class SitemapController extends Controller
     public function categories()
     {
         $content = Cache::remember('sitemap_categories', now()->addDay(), function () {
-            $categories = Category::withCount(['articles' => function ($query) {
+            $categories = Category::withCount([
+                'articles' => function ($query) {
                     $query->where('status', 'published');
-                }])
+                }
+            ])
                 ->select('id', 'name', 'slug', 'updated_at')
                 ->orderBy('articles_count', 'desc')
                 ->get()
@@ -216,11 +218,13 @@ class SitemapController extends Controller
     {
         $content = Cache::remember('sitemap_authors', now()->addDay(), function () {
             $authors = \App\Models\User::whereHas('articles', function ($query) {
-                    $query->where('status', 'published');
-                })
-                ->withCount(['articles' => function ($query) {
-                    $query->where('status', 'published');
-                }])
+                $query->where('status', 'published');
+            })
+                ->withCount([
+                    'articles' => function ($query) {
+                        $query->where('status', 'published');
+                    }
+                ])
                 ->select('id', 'name', 'updated_at')
                 ->orderBy('articles_count', 'desc')
                 ->limit(500)
