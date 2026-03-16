@@ -401,4 +401,75 @@ class ArticleController extends Controller
 
         return back()->with('success', "{$submitted} artikel berhasil diajukan untuk review.");
     }
+
+    /**
+     * Admin: List all articles from all users
+     */
+    public function adminArticles(Request $request): View
+    {
+        $this->authorize('viewAny', Article::class);
+
+        $user = Auth::user();
+        if (!$user->isAdmin()) {
+            abort(403);
+        }
+
+        $query = Article::with(['user', 'category']);
+
+        // Status filter
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Category filter
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Author filter
+        if ($request->filled('author')) {
+            $query->where('user_id', $request->author);
+        }
+
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhereHas('user', fn($q2) => $q2->where('full_name', 'like', "%{$search}%"));
+            });
+        }
+
+        // Sorting
+        $sortBy = $request->input('sort', 'latest');
+        switch ($sortBy) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'popular':
+                $query->orderBy('views_count', 'desc');
+                break;
+            case 'title':
+                $query->orderBy('title', 'asc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+        }
+
+        $articles = $query->paginate(20)->withQueryString();
+
+        // Statistics
+        $stats = [
+            'total' => Article::count(),
+            'published' => Article::where('status', 'published')->count(),
+            'pending' => Article::where('status', 'pending')->count(),
+            'draft' => Article::where('status', 'draft')->count(),
+            'revision' => Article::where('status', 'revision')->count(),
+            'rejected' => Article::where('status', 'rejected')->count(),
+        ];
+
+        $categories = Category::where('is_active', true)->orderBy('name')->get();
+
+        return view('admin.articles', compact('articles', 'stats', 'categories'));
+    }
 }

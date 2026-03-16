@@ -122,9 +122,19 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.siswa', compact(
-            'stats', 'totalViews', 'totalLikes', 'totalComments', 'totalBookmarks',
-            'recentArticles', 'draftArticles', 'revisionArticles', 'unreadNotifications',
-            'topArticles', 'articlesThisMonth', 'monthlyTarget', 'writingStreak',
+            'stats',
+            'totalViews',
+            'totalLikes',
+            'totalComments',
+            'totalBookmarks',
+            'recentArticles',
+            'draftArticles',
+            'revisionArticles',
+            'unreadNotifications',
+            'topArticles',
+            'articlesThisMonth',
+            'monthlyTarget',
+            'writingStreak',
             'recommendedArticles'
         ));
     }
@@ -149,7 +159,8 @@ class DashboardController extends Controller
             $streak++;
             $date = $date->subDay();
 
-            if ($streak > 30) break; // Max 30 days
+            if ($streak > 30)
+                break; // Max 30 days
         }
 
         return $streak;
@@ -225,8 +236,13 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.guru', compact(
-            'pendingArticles', 'revisionArticles', 'topAuthors', 'recentApprovals',
-            'stats', 'weeklyStats', 'pendingByCategory'
+            'pendingArticles',
+            'revisionArticles',
+            'topAuthors',
+            'recentApprovals',
+            'stats',
+            'weeklyStats',
+            'pendingByCategory'
         ));
     }
 
@@ -271,13 +287,33 @@ class DashboardController extends Controller
             ->get();
 
         // Monthly article trend (last 6 months)
-        $monthlyArticles = Article::where('status', 'published')
-            ->where('published_at', '>=', now()->subMonths(6))
-            ->selectRaw('MONTH(published_at) as month, YEAR(published_at) as year, COUNT(*) as count')
+        // Use COALESCE to fallback to created_at when published_at is NULL
+        $monthlyArticlesRaw = Article::where('status', 'published')
+            ->where(function ($q) {
+                $q->where('published_at', '>=', now()->subMonths(6))
+                    ->orWhere(function ($q2) {
+                        $q2->whereNull('published_at')
+                            ->where('created_at', '>=', now()->subMonths(6));
+                    });
+            })
+            ->selectRaw('MONTH(COALESCE(published_at, created_at)) as month, YEAR(COALESCE(published_at, created_at)) as year, COUNT(*) as count')
             ->groupBy('year', 'month')
             ->orderBy('year')
             ->orderBy('month')
-            ->get();
+            ->get()
+            ->keyBy(fn($item) => $item->year . '-' . $item->month);
+
+        // Fill missing months with 0 so all 6 bars always appear
+        $monthlyArticles = collect();
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $key = $date->year . '-' . $date->month;
+            $monthlyArticles->push((object) [
+                'month' => $date->month,
+                'year' => $date->year,
+                'count' => $monthlyArticlesRaw->has($key) ? $monthlyArticlesRaw->get($key)->count : 0,
+            ]);
+        }
 
         // Monthly user registration trend
         $monthlyUsers = User::where('created_at', '>=', now()->subMonths(6))
@@ -305,8 +341,15 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.admin', compact(
-            'userStats', 'articleStats', 'engagementStats', 'categories',
-            'monthlyArticles', 'monthlyUsers', 'recentActivities', 'recentUsers', 'topAuthors'
+            'userStats',
+            'articleStats',
+            'engagementStats',
+            'categories',
+            'monthlyArticles',
+            'monthlyUsers',
+            'recentActivities',
+            'recentUsers',
+            'topAuthors'
         ));
     }
 }

@@ -394,6 +394,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // Tags
     Route::resource('tags', TagController::class);
 
+    // Articles Management
+    Route::get('/articles', [ArticleController::class, 'adminArticles'])->name('articles');
+
+    // Comments Management
+    Route::get('/comments', [CommentController::class, 'adminIndex'])->name('comments');
+
     // Settings
     Route::get('/pengaturan', function () {
         $registrationEnabled = \App\Models\Setting::registrationEnabled();

@@ -312,4 +312,49 @@ class CommentController extends Controller
             'replies' => $replies,
         ]);
     }
+
+    /**
+     * Admin: List all comments with filters
+     */
+    public function adminIndex(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user->isAdmin()) {
+            abort(403);
+        }
+
+        $query = Comment::with(['user', 'article'])
+            ->whereNull('parent_id');
+
+        // Status filter
+        if ($request->filled('status')) {
+            if ($request->status === 'approved') {
+                $query->where('is_approved', true);
+            } elseif ($request->status === 'pending') {
+                $query->where('is_approved', false);
+            }
+        }
+
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('content', 'like', "%{$search}%")
+                    ->orWhereHas('user', fn($q2) => $q2->where('full_name', 'like', "%{$search}%"))
+                    ->orWhereHas('article', fn($q2) => $q2->where('title', 'like', "%{$search}%"));
+            });
+        }
+
+        $comments = $query->orderBy('created_at', 'desc')
+            ->paginate(20)
+            ->withQueryString();
+
+        $stats = [
+            'total' => Comment::count(),
+            'approved' => Comment::where('is_approved', true)->count(),
+            'pending' => Comment::where('is_approved', false)->count(),
+        ];
+
+        return view('admin.comments', compact('comments', 'stats'));
+    }
 }
